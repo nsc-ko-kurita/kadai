@@ -1,0 +1,102 @@
+-- SQLite
+--アーティスト・バンド　2
+--   id　INTEGER PRIMARY KEY, 
+--    名前 TEXT
+CREATE TABLE artists(
+    id INTEGER PRIMARY KEY,
+    name TEXT
+);
+ 
+
+--アルバム　各アーティスト　2
+--    id　INTEGER PRIMARY KEY、
+--   タイトル TEXT、
+--    アーティスト INTEGER
+CREATE TABLE album(
+    id INTEGER PRIMARY KEY,
+    title TEXT,
+    artistid INTEGER,
+    FOREIGN KEY (artistid) REFERENCES artists(id)
+);
+ 
+
+--曲　各アルバム　3
+--   id、
+--    名前 TEXT、
+--    アルバム INTEGER、
+--    メディアタイプ INTEGER、
+--    ジャンル INTEGER、
+--    作曲者 TEXT、
+--    長さ（秒数）INTEGER
+CREATE TABLE music(
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    album_id INTEGER,
+    media_id INTEGER,
+    genre_id InTEGER,
+    writer TEXT,
+    second INTEGER,
+    FOREIGN KEY (album_id) REFERENCES album(id),
+    FOREIGN KEY (media_id) REFERENCES media(id),
+    FOREIGN KEY (genre_id) REFERENCES genre(id)
+);
+ 
+
+--ジャンル　3
+--    id　INTEGER PRIMARY KEY、
+--    名前 TEXT
+CREATE TABLE genre(
+    id INTEGER PRIMARY KEY,
+    name TEXT
+);
+ 
+
+--メディアタイプ　3
+--    id　INTEGER PRIMARY KEY　
+--    名前 TEXT
+CREATE TABLE media(
+    id INTEGER PRIMARY KEY,
+    name TEXT
+);
+ 
+
+--プレイリスト　2
+--    id　INTEGER PRIMARY KEY　
+--    名前 TEXT
+CREATE TABLE list(
+    id INTEGER PRIMARY KEY,
+    name TEXT
+);
+ 
+
+--曲メディアタイプ 3
+--    メディアID　INTEGER PRIMARY KEY
+--    曲ID INTEGER PRIMARY KEY
+CREATE TABLE music_media(
+    media_id INTEGER ,
+    music_id INTEGER ,
+    PRIMARY KEY (media_id, music_id),
+    FOREIGN KEY (media_id) REFERENCES media(id),
+    FOREIGN KEY (music_id) REFERENCES music(id)
+);
+ 
+
+
+--曲プレイリスト 各プレイリストに曲２
+--    プレイリストID INTEGER PRIMARY  KEY
+--    曲ID INTEGER PRIMARY KEY 
+CREATE TABLE music_playlist(
+    list_id INTEGER ,
+    music_id INTEGER ,
+    PRIMARY KEY (list_id, music_id),
+    FOREIGN KEY (list_id) REFERENCES list(id),
+    FOREIGN KEY (music_id) REFERENCES music(id)
+);
+ 
+
+--関係性
+--アーティスト　1　:　N アルバム
+--アルバム 1　:　N　曲
+--曲　N　: 1　ジャンル   
+--曲　N　:　N メディアタイプ
+--曲　N　:　N プレイリスト
